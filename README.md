@@ -1,2 +1,3 @@
 # JSwitch
- JSwitch, a launguage of sorts.
+JSwitch, a launguage to improve on java and kotlin.
+
