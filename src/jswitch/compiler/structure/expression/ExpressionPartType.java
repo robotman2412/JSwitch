@@ -1,0 +1,20 @@
+package jswitch.compiler.structure.expression;
+
+public enum ExpressionPartType {
+	
+	PARENTHESIS_OPEN,
+	PARENTHESIS_CLOSE,
+	ARRAY_OPEN,
+	ARRAY_CLOSE,
+	EXPRESSION,
+	CAST,
+	OPERATOR,
+	REFERENCE,
+	RAW,
+	LITERAL,
+	POST_INCREMENT,
+	POST_DECREMENT,
+	PRE_INCREMENT,
+	PRE_DECREMENT
+	
+}

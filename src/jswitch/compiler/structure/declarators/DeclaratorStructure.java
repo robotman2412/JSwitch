@@ -4,6 +4,7 @@ import jswitch.compiler.CompilerFeedback;
 import jswitch.compiler.CompilerWarning;
 import jswitch.compiler.SyntaxError;
 import jswitch.compiler.structure.AccessLevel;
+import jswitch.compiler.structure.expression.ExpressionStructure;
 import jswitch.compiler.structure.Structure;
 import jswitch.compiler.tokenising.*;
 import jswitch.util.ArrayFeeder;
@@ -20,7 +21,7 @@ public class DeclaratorStructure extends Structure {
 	public static List<String> getInvalidNames() {
 		List<String> invalid = new ArrayList<>();
 		for (Keyword keyword : Keyword.values()) {
-			invalid.add(keyword.getName());
+			invalid.add(keyword.name);
 		}
 		invalid.add("void");
 		return invalid;
@@ -47,6 +48,7 @@ public class DeclaratorStructure extends Structure {
 	protected boolean isAbstract;
 	protected boolean isSynchronized;
 	protected DeclaratorType type;
+	protected ExpressionStructure variableExpression;
 	//TODO: generic types
 
 	public static void main(String[] args) {
@@ -85,11 +87,13 @@ public class DeclaratorStructure extends Structure {
 		boolean wasNameDeclared = false;
 		boolean wasTypeDeclared = false;
 		boolean wasImplementationDeclared = false;
-
-		for (Token token : tokens) {
+		ExpressionStructure variableExpression = null;
+		
+		while (tokens.length() > 0) {
+			Token token = tokens.getOne();
 			try {
 				if(token instanceof StructureToken) {
-					SeperationType seperation = ((StructureToken) token).getSeperationType();
+					StructureType seperation = ((StructureToken) token).getStructureType();
 					switch(seperation) {
 						case ANNOTATION:
 							Token next = tokens.getOne();
@@ -109,7 +113,7 @@ public class DeclaratorStructure extends Structure {
 					if (wasNameDeclared) {
 						switch (keyword) {
 							default:
-								throw new SyntaxError("The keyword " + keyword.getName() + " was unexpected here.", token);
+								throw new SyntaxError("The keyword " + keyword.name + " was unexpected here.", token);
 							case EXTENDS:
 								if (type == DeclaratorType.ENUM) {
 									errors.add(new SyntaxError("Enums cannot extend a class, please remove this token.", token));
@@ -134,7 +138,7 @@ public class DeclaratorStructure extends Structure {
 					{
 						switch (keyword) {
 							default:
-								throw new SyntaxError("The keyword " + keyword.getName() + " was unexpected here.", token);
+								throw new SyntaxError("The keyword " + keyword.name + " was unexpected here.", token);
 							case CLASS:
 								if (type != null) {
 									throw new SyntaxError("This is already defined as " + type.name().toLowerCase() + ", please remove this token.", token);
@@ -199,6 +203,18 @@ public class DeclaratorStructure extends Structure {
 						}
 					}
 				}
+				else if (token.getType() == TokenType.SEPERATION) {
+					switch (token.getRawContent()) {
+						case ("="):
+							type = DeclaratorType.VARIABLE;
+							if (!wasNameDeclared) {
+								throw new SyntaxError("No name was defined for variable.", token);
+							}
+							break;
+						default:
+							throw new SyntaxError(token.getRawContent() + " was not expected here, please remove this token.", token);
+					}
+				}
 				else if (token.getType() == TokenType.SIMPLE) {
 					if (!wasTypeDeclared) {
 						declaredTypeName = token.getRawContent();
@@ -207,7 +223,14 @@ public class DeclaratorStructure extends Structure {
 					}
 
 					if (wasNameDeclared) {
-						throw new SyntaxError(token.getRawContent() + " was not expected here, please remove this token.", token);
+						if (type == DeclaratorType.VARIABLE) {
+							//variableExpression = ExpressionStructure.parseExpression();
+							break;
+						}
+						else
+						{
+							throw new SyntaxError(token.getRawContent() + " was not expected here, please remove this token.", token);
+						}
 					}
 
 					declaredName = token.getRawContent();
@@ -220,15 +243,6 @@ public class DeclaratorStructure extends Structure {
 					wasNameDeclared = true;
 
 					//temporary this
-					out = new DeclaratorStructure();
-					out.typeName = declaredTypeName;
-					out.accessLevel = accessLevel;
-					out.isAbstract = isAbstract;
-					out.isSynchronized = isSynchronized;
-					out.isFinal = isFinal;
-					out.isStatic = isStatic;
-					out.name = declaredName;
-					out.type = type;
 
 					boolean genericsAllowed = true;
 					if (type == null) {
@@ -244,12 +258,6 @@ public class DeclaratorStructure extends Structure {
 							break;
 					}
 				}
-				else if (token.getType() == TokenType.SEPERATION) {
-					String raw = token.getRawContent();
-					if (raw.equals("=")) {
-						//git expression lolasdf
-					}
-				}
 				else if (token.getType() != TokenType.SPACE && token.getType() != TokenType.NEWLINE) {
 					throw new SyntaxError(token.getRawContent() + " was not expected here, please remove this.", token);
 				}
@@ -257,6 +265,15 @@ public class DeclaratorStructure extends Structure {
 				errors.add(e);
 			}
 		}
+		out = new DeclaratorStructure();
+		out.typeName = declaredTypeName;
+		out.accessLevel = accessLevel;
+		out.isAbstract = isAbstract;
+		out.isSynchronized = isSynchronized;
+		out.isFinal = isFinal;
+		out.isStatic = isStatic;
+		out.name = declaredName;
+		out.type = type;
 		return new DeclaratorOut(out, new CompilerFeedback(errors.toArray(new SyntaxError[0]), warnings.toArray(new CompilerWarning[0])));
 	}
 

@@ -26,11 +26,11 @@ public abstract class Token {
 		boolean docsComment = false;
 		for (Token token : tokens) {
 			if (token instanceof StructureToken) {
-				SeperationType seperationType = ((StructureToken) token).getSeperationType();
-				if (seperationType == SeperationType.DOCUMENTATION_COMMENT_OPEN) {
+				StructureType structureType = ((StructureToken) token).getStructureType();
+				if (structureType == StructureType.DOCUMENTATION_COMMENT_OPEN) {
 					docsComment = true;
 				}
-				else if (seperationType == SeperationType.COMMENT_CLOSE) {
+				else if (structureType == StructureType.COMMENT_CLOSE) {
 					docsComment = false;
 				}
 			}

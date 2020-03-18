@@ -5,7 +5,7 @@ public class KeywordToken extends Token {
 	Keyword keyword;
 
 	public KeywordToken(Keyword mKeyword, int mLine, int mColumnStart) {
-		super(mKeyword.getName(), mLine, mColumnStart, mColumnStart + mKeyword.getName().length());
+		super(mKeyword.name, mLine, mColumnStart, mColumnStart + mKeyword.name.length());
 		keyword = mKeyword;
 	}
 

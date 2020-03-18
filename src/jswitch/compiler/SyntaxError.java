@@ -31,6 +31,10 @@ public class SyntaxError extends RuntimeException {
 		message = mMessage;
 		fullMessage = "Syntax error in line " + lineStart + ", colomn " + colomnStart + ": " + message;
 	}
+	
+	public Token[] getOffendingTokens() {
+		return offendingTokens;
+	}
 
 	public String getSimpleMessage() {
 		return message;

@@ -2,7 +2,40 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc098afc-ed7c-4316-9f95-21212c1d0973" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionOut.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionPart.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionPartType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionStructure.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/Operator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/Operators.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/simple/AddOperator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/simple/NumericOperator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILFragment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILInstruction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILInstructionFragment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/WordSize.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/WordSizeType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/LiteralToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/LiteralType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/typedef/SimpleNumberType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/typedef/SimpleNumberTypeEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/typedef/SimpleStringTypeDef.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/typedef/TypeDef.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/util/ListFeeder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/CompilerWarning.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/CompilerWarning.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/SyntaxError.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/SyntaxError.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/ExpressionStructure.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/declarators/DeclaratorStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/declarators/DeclaratorStructure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/Keyword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/Keyword.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/KeywordToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/KeywordToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/SeperationToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/SeperationToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/SeperationType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/StructureType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/StructureToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/StructureToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/Token.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/TokenBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/TokenBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/util/Feeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/util/Feeder.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,10 +52,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="AnnotationType" />
         <option value="Interface" />
         <option value="Enum" />
         <option value="Class" />
-        <option value="AnnotationType" />
       </list>
     </option>
   </component>
@@ -34,6 +67,17 @@
   </component>
   <component name="ProjectId" id="1UKt8eWjZkMnzINGjMGD69Sxuvq" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="jswitch.util" />
+      <recent name="jswitch.compiler.jswil" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -91,6 +135,14 @@
       <option name="presentableId" value="Default" />
       <updated>1575116956631</updated>
     </task>
+    <task id="LOCAL-00001" summary="Add to git.">
+      <created>1584123983995</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1584123983996</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -105,5 +157,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add to git." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add to git." />
   </component>
 </project>

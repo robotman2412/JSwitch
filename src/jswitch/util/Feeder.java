@@ -19,7 +19,7 @@ public interface Feeder<T> extends Iterable<T>, Iterator<T> {
 	 * @throws ArrayIndexOutOfBoundsException when there is no data left
 	 */
 	Collection<T> get(int number) throws ArrayIndexOutOfBoundsException;
-
+	
 	/**
 	 * @return the remaining length of the stream
 	 */

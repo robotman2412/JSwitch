@@ -35,7 +35,11 @@ public class CompilerWarning extends RuntimeException {
 	public String getSimpleMessage() {
 		return message;
 	}
-
+	
+	public Token[] getOffendingTokens() {
+		return offendingTokens;
+	}
+	
 	@Override
 	public String getMessage() {
 		return fullMessage;

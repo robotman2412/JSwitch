@@ -5,6 +5,8 @@ import jswitch.compiler.JSwitchPreProcessor;
 import jswitch.compiler.SyntaxError;
 import jswitch.compiler.structure.declarators.DeclaratorOut;
 import jswitch.compiler.structure.declarators.DeclaratorStructure;
+import jswitch.compiler.structure.expression.ExpressionOut;
+import jswitch.compiler.structure.expression.ExpressionStructure;
 import jswitch.util.ArrayFeeder;
 import jswitch.util.StringFeeder;
 import jswitch.util.text.TextTable;
@@ -17,6 +19,7 @@ import java.util.List;
  */
 public class TokenBuilder {
 
+	protected List<SyntaxError> errors;
 	protected StringFeeder feed;
 	protected List<Token> tokens;
 	protected String accumulated;
@@ -44,12 +47,15 @@ public class TokenBuilder {
 		colomn = 0;
 	}
 
+	//region unit tests
 	public static void main(String[] args) {
-		String input = "public final synchronized String someString = null;";
-		TokenBuilder builder = new TokenBuilder();
+		//printTokenTable(new TokenBuilder().tokenize("ShitClass.staticMember0.function()", 0).toArray(new Token[0]));
+		expressionTest();
+	}
+	
+	public static void printTokenTable(Token[] tokens) {
 		TextTable table = new TextTable();
 		table.add("TYPE", "LINE", "COL", "", "", "RAW");
-		Token[] tokens = builder.tokenize(input, 0).toArray(new Token[0]);
 		for (Token token : tokens) {
 			String s = "" + token.getColumnStart();
 			String s1 = "";
@@ -61,6 +67,58 @@ public class TokenBuilder {
 			table.add(token.getType().toString(), token.getLine(), s, s1, s2, "\"" + JSwitchPreProcessor.escapeString(token.getRawContent()) + "\"");
 		}
 		table.print(2);
+	}
+	
+	public static void expressionTest() {
+		String in = "(i++) / 6f * - 0xcff";
+		TokenBuilder builder = new TokenBuilder();
+		Token[] tokens = builder.tokenize(in, 0).toArray(new Token[0]);
+		printTokenTable(tokens);
+		List<Token> filteredTokens = new ArrayList<>();
+		for (Token token : tokens) {
+			if (token instanceof SpaceToken || token instanceof NewLineToken) {
+				continue;
+			}
+			filteredTokens.add(token);
+		}
+		ExpressionOut output = ExpressionStructure.parseExpressionRaw(filteredTokens);
+		System.out.println("\nErrors:");
+		try {
+			Thread.sleep(0, 1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		for (SyntaxError error : output.feedback.errors) {
+			System.err.println(error.getMessage());
+			System.err.print("Offending tokens:");
+			for (Token token : error.getOffendingTokens()) {
+				System.err.print(" " + token.getRawContent());
+			}
+			System.err.println();
+		}
+		System.out.println("\nWarnings:");
+		for (CompilerWarning warning : output.feedback.warnings) {
+			System.err.println(warning.getMessage());
+			System.err.print("Offending tokens:");
+			for (Token token : warning.getOffendingTokens()) {
+				System.err.print(" " + token.getRawContent());
+			}
+			System.err.println();
+		}
+	}
+	
+	public static void literalTest() {
+		String input = "-42069 666L 43f  66.5d -3s  0xabcfeff '\\x69' \"string0 \\\" ' \\' haha funny.\"";
+		TokenBuilder builder = new TokenBuilder();
+		Token[] tokens = builder.tokenize(input, 0).toArray(new Token[0]);
+		printTokenTable(tokens);
+	}
+	
+	public static void declaratorTest() {
+		String input = "public final synchronized String someString = null";
+		TokenBuilder builder = new TokenBuilder();
+		Token[] tokens = builder.tokenize(input, 0).toArray(new Token[0]);
+		printTokenTable(tokens);
 		DeclaratorOut output = DeclaratorStructure.parseDeclarator(new ArrayFeeder<>(tokens));
 		DeclaratorStructure dec = output.declarator;
 		System.out.println("Name: " + dec.getName());
@@ -79,7 +137,8 @@ public class TokenBuilder {
 			System.err.println(warning.getMessage());
 		}
 	}
-
+	//endregion unit tests
+	
 	/**
 	 * Tokenises a number of lines, seperated by \r\n, just \r or just \n.
 	 * @param lineNumOffset the line number to start at
@@ -126,31 +185,68 @@ public class TokenBuilder {
 				comment = false;
 				continue;
 			}
+			else if (isChar || isString) {
+				if (c == '\"' && isString) {
+					tokens.add(new LiteralToken("\"" + accumulated + "\"", LiteralType.STRING, JSwitchPreProcessor.unescapeString(accumulated), line, colomn - accumulated.length()));
+					isString = false;
+					accumulated = "";
+				}
+				else if (c == '\'' && isChar) {
+					tokens.add(new LiteralToken("\'" + accumulated + "\'", LiteralType.CHARACTER, JSwitchPreProcessor.unescapeString(accumulated), line, colomn - accumulated.length()));
+					isChar = false;
+					accumulated = "";
+				}
+				else {
+					accumulated += c;
+					if (c == '\\') {
+						char next = feed.getOne();
+						colomn ++;
+						if (next == '\"') {
+							accumulated += "\"";
+						} else if (next == '\'') {
+							accumulated += "\'";
+						} else if (next == '\\') {
+							accumulated += "\\";
+						}
+						else
+						{
+							colomn --;
+							feed.goBackOne();
+						}
+					}
+				}
+			}
 			//region comments
 			else if (c == '/') {
 				if (expect("**")) {
-					tokens.add(new StructureToken(SeperationType.DOCUMENTATION_COMMENT_OPEN, line, colomn - 2));
+					tokens.add(new StructureToken(StructureType.DOCUMENTATION_COMMENT_OPEN, line, colomn - 2));
 					multiLineComment = true;
 					docsComment = true;
 				}
 				else if (expect("*")) {
-					tokens.add(new StructureToken(SeperationType.COMMENT_OPEN, line, colomn - 1));
+					tokens.add(new StructureToken(StructureType.COMMENT_OPEN, line, colomn - 1));
 					multiLineComment = true;
 				}
 				else if (expect("/")) {
-					tokens.add(new StructureToken(SeperationType.SINGLE_LINE_COMMENT, line, colomn - 1));
+					tokens.add(new StructureToken(StructureType.SINGLE_LINE_COMMENT, line, colomn - 1));
 					comment = true;
+				}
+				else
+				{
+					popAccumulate();
+					tokens.add(new SeperationToken("/", line, colomn, colomn));
 				}
 			}
 			else if (c == '*') {
 				if (expect("/")) {
-					tokens.add(new StructureToken(SeperationType.COMMENT_CLOSE, line, colomn - 1));
+					tokens.add(new StructureToken(StructureType.COMMENT_CLOSE, line, colomn - 1));
 					multiLineComment = false;
 					docsComment = false;
 				}
 				else
 				{
-					accumulated += c;//TODO
+					popAccumulate();
+					tokens.add(new SeperationToken("*", line, colomn, colomn));
 				}
 			}
 			//endregion comments
@@ -160,27 +256,27 @@ public class TokenBuilder {
 			//region blocks
 			else if (c == '{') {
 				popAccumulate();
-				tokens.add(new StructureToken(SeperationType.CODE_BLOCK_OPEN, line, colomn));
+				tokens.add(new StructureToken(StructureType.CODE_BLOCK_OPEN, line, colomn));
 			}
 			else if (c == '}') {
 				popAccumulate();
-				tokens.add(new StructureToken(SeperationType.CODE_BLOCK_CLOSE, line, colomn));
+				tokens.add(new StructureToken(StructureType.CODE_BLOCK_CLOSE, line, colomn));
 			}
 			else if (c == '[') {
 				popAccumulate();
-				tokens.add(new StructureToken(SeperationType.ARRAY_OPEN, line, colomn));
+				tokens.add(new StructureToken(StructureType.ARRAY_OPEN, line, colomn));
 			}
 			else if (c == ']') {
 				popAccumulate();
-				tokens.add(new StructureToken(SeperationType.ARRAY_CLOSE, line, colomn));
+				tokens.add(new StructureToken(StructureType.ARRAY_CLOSE, line, colomn));
 			}
 			else if (c == '(') {
 				popAccumulate();
-				tokens.add(new StructureToken(SeperationType.PARENTHESIS_OPEN, line, colomn));
+				tokens.add(new StructureToken(StructureType.PARENTHESIS_OPEN, line, colomn));
 			}
 			else if (c == ')') {
 				popAccumulate();
-				tokens.add(new StructureToken(SeperationType.PARENTHESIS_CLOSE, line, colomn));
+				tokens.add(new StructureToken(StructureType.PARENTHESIS_CLOSE, line, colomn));
 			}
 			//endregion blocks
 			else if (isWhiteSpace(c)) {
@@ -197,16 +293,34 @@ public class TokenBuilder {
 				feed.goBack(1);
 				continue;
 			}
+			else if (c == '.') {
+				if (accumulated.matches("-?[0-9]+")) { //is a number
+					accumulated += c;
+				}
+				else
+				{
+					popAccumulate();
+					tokens.add(new SeperationToken(".", line, colomn, colomn)); //is just a .
+				}
+			}
 			else if (expectSeperate(c)) {
 				//do nothing
 			}
-			//TODO: add literals here
+			else if (c == '\"') {
+				popAccumulate();
+				isString = true;
+			}
+			else if (c == '\'') {
+				popAccumulate();
+				isChar = true;
+			}
 			else
 			{
 				accumulated += c;
 			}
 			colomn ++;
 		}
+		//ensure we have no extra random stuff
 		popAccumulate();
 		return tokens;
 	}
@@ -241,11 +355,11 @@ public class TokenBuilder {
 		for (String seperator : SeperationToken.seperators) {
 			if (seperator.length() == 1 && c == seperator.charAt(0)) {
 				popAccumulate();
-				tokens.add(new SeperationToken(seperator, line, colomn - seperator.length() + 1, colomn));
+				tokens.add(new SeperationToken(seperator, line, colomn, colomn));
 				return true;
 			}
 			if (seperator.length() > 1 && c == seperator.charAt(0) && expect(seperator.substring(1))) {
-				tokens.add(new SeperationToken(seperator, line, colomn - seperator.length() + 1, colomn));
+				tokens.add(new SeperationToken(seperator, line, colomn - seperator.length() + 1, colomn + 1));
 				return true;
 			}
 		}
@@ -261,21 +375,134 @@ public class TokenBuilder {
 		}
 		if (whitespace) {
 			tokens.add(new SpaceToken(accumulated, line, colomn - accumulated.length(), colomn));
+			accumulated = "";
 			return;
+		}
+		if (accumulated.matches("[0-9]+((\\.[0-9]+)?|[fFdDbSsLl]?)") && tokens.get(tokens.size() - 1).getRawContent().equals("-")) {
+			tokens.remove(tokens.size() - 1);
+			accumulated = "-" + accumulated;
 		}
 		tokens.add(getTokenForstring(accumulated, line, colomn - accumulated.length()));
 		accumulated = "";
 	}
-
+	
 	/**
 	 * TODO
 	 * Gets the token for the input string.
 	 * @param in the string for which to get the token for
 	 * @return the token, or null if invalid
 	 */
-	public static Token getTokenForstring(String in, int line, int colomn) {
+	public Token getTokenForstring(String in, int line, int colomn) {
+		final String hexChars = "0123456789abcdef";
+		final String octalChars = "01234567";
+		final String decimalChars = "0123456789";
+		if (in.startsWith("0x")) { //hexadecimal literals
+			if (!in.matches("0x[0-9a-fA-F]+")) {
+				Token token = new SimpleToken(in, line, colomn, colomn + in.length() - 1);
+				errors.add(new SyntaxError("This is not a valid hexadecimal literal, please read https://https://en.wikipedia.org/wiki/Hexadecimal/ for more information.", token));
+				return token;
+			}
+			else if (in.length() > 18) {
+				Token token = new SimpleToken(in, line, colomn, colomn + in.length() - 1);
+				errors.add(new SyntaxError("This hexadecimal literal is too long to fit in even a long integer (64 bits), please shorten it.", token));
+				return token;
+			}
+			else
+			{
+				long value = 0;
+				for (int i = 2; i < in.length(); i++) {
+					value <<= 4;
+					value |= hexChars.indexOf(in.toLowerCase().charAt(i));
+				}
+				return new LiteralToken(in, LiteralType.forNumeric(value), value, line, colomn);
+			}
+		}
+		if (in.startsWith("0q") || in.startsWith("0o") || (octalChars.indexOf(in.charAt(0)) != -1 && (in.endsWith("q") || in.endsWith("o")))) { //octal literals
+			String octal;
+			if (in.startsWith("0q") || in.startsWith("0o")) {
+				octal = in.substring(2);
+			}
+			else
+			{
+				octal = in.substring(0, in.length() - 1);
+			}
+			if (!octal.matches("[0-7]+")) {
+				Token token = new SimpleToken(in, line, colomn, colomn + in.length() - 1);
+				errors.add(new SyntaxError("This is not a valid octal literal, please read https://https://en.wikipedia.org/wiki/Octal/ for more information.", token));
+				return token;
+			}
+			else if (octal.length() > 22) {
+				Token token = new SimpleToken(in, line, colomn, colomn + in.length() - 1);
+				errors.add(new SyntaxError("This octal literal is too long to possibly fit in even a long integer (64 bits), please shorten it.", token));
+				return token;
+			}
+			else
+			{
+				long value = 0;
+				for (int i = 0; i < octal.length(); i++) {
+					value <<= 3;
+					value |= octalChars.indexOf(octal.charAt(i));
+				}
+				return new LiteralToken(in, LiteralType.forNumeric(value), value, line, colomn);
+			}
+		}
+		if (in.endsWith("B")) { //octal literals
+			String bin = in.substring(0, in.length() - 1);
+			if (!bin.matches("[0-7]+")) {
+				Token token = new SimpleToken(in, line, colomn, colomn + in.length() - 1);
+				errors.add(new SyntaxError("This is not a valid octal literal, please read https://https://en.wikipedia.org/wiki/Octal/ for more information.", token));
+				return token;
+			}
+			else if (bin.length() > 64) {
+				Token token = new SimpleToken(in, line, colomn, colomn + in.length() - 1);
+				errors.add(new SyntaxError("This octal literal is too long to fit in even a long integer (64 bits), please shorten it.", token));
+				return token;
+			}
+			else
+			{
+				long value = 0;
+				for (int i = 0; i < bin.length(); i++) {
+					value <<= 1;
+					value |= bin.charAt(i) == '1' ? 1 : 0;
+				}
+				return new LiteralToken(in, LiteralType.forNumeric(value), value, line, colomn);
+			}
+		}
+		if (decimalChars.indexOf(in.charAt(0)) != -1 || in.charAt(0) == '-') { //decimal literals
+			String decimal = in.substring(0, in.length() - 1);
+			if (decimal.matches("-?[0-9]+(\\.[0-9]+[fFdD]?)|[fFdD]")) {
+				LiteralType type = LiteralType.DOUBLE;
+				if (decimal.toLowerCase().endsWith("f")) {
+					type = LiteralType.FLOAT;
+					decimal = decimal.substring(0, decimal.length() - 1);
+				}
+				else if (decimal.toLowerCase().endsWith("d")) {
+					decimal = decimal.substring(0, decimal.length() - 1);
+				}
+				double value = Double.parseDouble(decimal);
+				return new LiteralToken(in, type, value, line, colomn);
+			}
+			else if (!decimal.matches("-?[0-9]+")) {
+				Token token = new SimpleToken(in, line, colomn, colomn + in.length() - 1);
+				errors.add(new SyntaxError("This is not a valid decimal or floating point decimal literal.", token));
+				return token;
+			}
+			else if (decimal.length() > 19) {
+				Token token = new SimpleToken(in, line, colomn, colomn + in.length() - 1);
+				errors.add(new SyntaxError("This decimal literal is too long to possibly fit in even a long integer (64 bits), please shorten it.", token));
+				return token;
+			}
+			else
+			{
+				long value = decimal.charAt(0) == '-' ? Long.parseLong(decimal) :  Long.parseUnsignedLong(decimal);
+				return new LiteralToken(in, LiteralType.forNumeric(value), value, line, colomn);
+			}
+		}
+		if (in.equals("null")) {
+			return new LiteralToken(in, LiteralType.NULL, null, line, colomn);
+		}
 		for (Keyword keyword : Keyword.values()) {
-			if (in.equals(keyword.getName())) {
+			if (in.equals(keyword.name) || in.equals(keyword.altName)) {
 				return new KeywordToken(keyword, line, colomn);
 			}
 		}

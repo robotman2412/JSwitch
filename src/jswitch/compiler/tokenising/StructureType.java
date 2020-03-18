@@ -1,6 +1,6 @@
 package jswitch.compiler.tokenising;
 
-public enum SeperationType {
+public enum StructureType {
 	CODE_BLOCK_OPEN("{"),
 	CODE_BLOCK_CLOSE("}"),
 	ARRAY_OPEN("["),
@@ -15,7 +15,7 @@ public enum SeperationType {
 	ANNOTATION("@"),
 	CANONICAL_LINE_SPLITTER(";");
 	private String name;
-	SeperationType(String mName) {
+	StructureType(String mName) {
 		name = mName;
 	}
 	public String getName() {

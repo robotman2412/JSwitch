@@ -4,11 +4,11 @@ import static jswitch.compiler.tokenising.TokenType.STRUCTURE;
 
 public class StructureToken extends Token {
 
-	protected SeperationType seperationType;
+	protected StructureType structureType;
 
-	public StructureToken(SeperationType type, int mLine, int mColumnStart) {
+	public StructureToken(StructureType type, int mLine, int mColumnStart) {
 		super(type.getName(), mLine, mColumnStart, mColumnStart + type.getName().length());
-		seperationType = type;
+		structureType = type;
 	}
 
 	@Override
@@ -16,8 +16,8 @@ public class StructureToken extends Token {
 		return STRUCTURE;
 	}
 
-	public SeperationType getSeperationType() {
-		return seperationType;
+	public StructureType getStructureType() {
+		return structureType;
 	}
 
 }
