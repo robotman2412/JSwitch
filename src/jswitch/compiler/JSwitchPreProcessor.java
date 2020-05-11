@@ -1,12 +1,14 @@
 package jswitch.compiler;
 
+import jswitch.compiler.tokenising.Keyword;
+
 public class JSwitchPreProcessor {
 
 	/**
 	 * Unescapes a String in the same way the Java compiler would.
 	 * Note: Don't include the double quotes for the string.
 	 * Note 2: invalid escape sequences are printed, but just put down as the raw input in the output.
-	 * Note 3: escape sequences at the end of the string are concidered an error.
+	 * Note 3: escape sequences at the end of the string are considered an error.
 	 * @param escaped The string to unescape
 	 * @return the unescaped string, all escape sequences replaced
 	 */
@@ -91,4 +93,34 @@ public class JSwitchPreProcessor {
 				.replace("\'", "\\\'");
 	}
 
+	/** Characters in this string are not allowe to be in a name. */
+	public static String illegalNameChars = "!@#%^&*()+=-{}[]|\\;:\"'<>,.?/~`\t \r\n\b\f\0";
+	
+	/**
+	 * Checks whether the given name is valid.<br>
+	 * Any characters in the {@link #illegalNameChars} may not be contained in the input string.<br>
+	 * The input string may not be equal to any of the values of {@link Keyword#getAllNames()}.
+	 * @param name the input name
+	 * @return whether or not the name is legal for JSwitch
+	 */
+	public static boolean isValidName(String name) {
+		if (name == null || name.length() < 1) {
+			return false;
+		}
+		if ("1234567890".indexOf(name.charAt(0)) != -1) {
+			return false;
+		}
+		for (char c : name.toCharArray()) {
+			if (illegalNameChars.indexOf(c) != -1) {
+				return false;
+			}
+		}
+		for (String keyword : Keyword.getAllNames()) {
+			if (keyword.equals(name)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 }

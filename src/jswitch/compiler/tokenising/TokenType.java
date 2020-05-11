@@ -11,5 +11,6 @@ public enum TokenType {
 		.  ,  >>>=  >>>  >>=  <<=  >>  <<  >=  <=  >  <  ==  =  |=  ||  |  &=  &&  &  !=  !  ?  :  +=  ++  +  -=  --  -  *=  *  /=  /  ^=  ^  %=  %  ::  :
 		*/
 	NEWLINE, //new line in the file
-	KEYWORD
+	KEYWORD,
+	CANONICAL_SEPERATE // ;
 }

@@ -66,4 +66,17 @@ public interface Feeder<T> extends Iterable<T>, Iterator<T> {
 	default T next() {
 		return getOne();
 	}
+	
+	default T peek() {
+		if (length() < 1) {
+			return null;
+		}
+		else
+		{
+			T ret = getOne();
+			goBackOne();
+			return ret;
+		}
+	}
+	
 }

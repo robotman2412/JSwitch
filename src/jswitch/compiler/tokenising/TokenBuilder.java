@@ -1,13 +1,7 @@
 package jswitch.compiler.tokenising;
 
-import jswitch.compiler.CompilerWarning;
 import jswitch.compiler.JSwitchPreProcessor;
 import jswitch.compiler.SyntaxError;
-import jswitch.compiler.structure.declarators.DeclaratorOut;
-import jswitch.compiler.structure.declarators.DeclaratorStructure;
-import jswitch.compiler.structure.expression.ExpressionOut;
-import jswitch.compiler.structure.expression.ExpressionStructure;
-import jswitch.util.ArrayFeeder;
 import jswitch.util.StringFeeder;
 import jswitch.util.text.TextTable;
 
@@ -45,12 +39,12 @@ public class TokenBuilder {
 		isString = false;
 		isChar = false;
 		colomn = 0;
+		errors = new ArrayList<>();
 	}
 
 	//region unit tests
 	public static void main(String[] args) {
-		//printTokenTable(new TokenBuilder().tokenize("ShitClass.staticMember0.function()", 0).toArray(new Token[0]));
-		expressionTest();
+		
 	}
 	
 	public static void printTokenTable(Token[] tokens) {
@@ -69,73 +63,21 @@ public class TokenBuilder {
 		table.print(2);
 	}
 	
-	public static void expressionTest() {
-		String in = "(i++) / 6f * - 0xcff";
-		TokenBuilder builder = new TokenBuilder();
-		Token[] tokens = builder.tokenize(in, 0).toArray(new Token[0]);
-		printTokenTable(tokens);
-		List<Token> filteredTokens = new ArrayList<>();
+	
+	public static void printTokenTable(List<Token> tokens) {
+		TextTable table = new TextTable();
+		table.add("TYPE", "LINE", "COL", "", "", "RAW");
 		for (Token token : tokens) {
-			if (token instanceof SpaceToken || token instanceof NewLineToken) {
-				continue;
+			String s = "" + token.getColumnStart();
+			String s1 = "";
+			String s2 = "";
+			if (token.getColumnEnd() > token.getColumnStart() + 1) {
+				s2 = "" + (token.getColumnEnd() - 1);
+				s1 = "-";
 			}
-			filteredTokens.add(token);
+			table.add(token.getType().toString(), token.getLine(), s, s1, s2, "\"" + JSwitchPreProcessor.escapeString(token.getRawContent()) + "\"");
 		}
-		ExpressionOut output = ExpressionStructure.parseExpressionRaw(filteredTokens);
-		System.out.println("\nErrors:");
-		try {
-			Thread.sleep(0, 1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		for (SyntaxError error : output.feedback.errors) {
-			System.err.println(error.getMessage());
-			System.err.print("Offending tokens:");
-			for (Token token : error.getOffendingTokens()) {
-				System.err.print(" " + token.getRawContent());
-			}
-			System.err.println();
-		}
-		System.out.println("\nWarnings:");
-		for (CompilerWarning warning : output.feedback.warnings) {
-			System.err.println(warning.getMessage());
-			System.err.print("Offending tokens:");
-			for (Token token : warning.getOffendingTokens()) {
-				System.err.print(" " + token.getRawContent());
-			}
-			System.err.println();
-		}
-	}
-	
-	public static void literalTest() {
-		String input = "-42069 666L 43f  66.5d -3s  0xabcfeff '\\x69' \"string0 \\\" ' \\' haha funny.\"";
-		TokenBuilder builder = new TokenBuilder();
-		Token[] tokens = builder.tokenize(input, 0).toArray(new Token[0]);
-		printTokenTable(tokens);
-	}
-	
-	public static void declaratorTest() {
-		String input = "public final synchronized String someString = null";
-		TokenBuilder builder = new TokenBuilder();
-		Token[] tokens = builder.tokenize(input, 0).toArray(new Token[0]);
-		printTokenTable(tokens);
-		DeclaratorOut output = DeclaratorStructure.parseDeclarator(new ArrayFeeder<>(tokens));
-		DeclaratorStructure dec = output.declarator;
-		System.out.println("Name: " + dec.getName());
-		System.out.println("Type name: " + dec.getTypeName());
-		System.out.println("Declarator type: " + dec.getType());
-		System.out.println("Is static: " + dec.isStatic());
-		System.out.println("Is abstract: " + dec.isAbstract());
-		System.out.println("Is final: " + dec.isFinal());
-		System.out.println("Is synchronized: " + dec.isSynchronized());
-		System.out.println("\nErrors:");
-		for (SyntaxError error : output.feedback.errors) {
-			System.err.println(error.getMessage());
-		}
-		System.out.println("\nWarnings:");
-		for (CompilerWarning warning : output.feedback.warnings) {
-			System.err.println(warning.getMessage());
-		}
+		table.print(2);
 	}
 	//endregion unit tests
 	
@@ -252,6 +194,10 @@ public class TokenBuilder {
 			//endregion comments
 			else if (comment || (multiLineComment && !docsComment)) {
 				accumulated += c;
+			}
+			else if (c == ';') {
+				popAccumulate();
+				tokens.add(new CanonicalSeperationToken(line, colomn));
 			}
 			//region blocks
 			else if (c == '{') {
@@ -378,10 +324,6 @@ public class TokenBuilder {
 			accumulated = "";
 			return;
 		}
-		if (accumulated.matches("[0-9]+((\\.[0-9]+)?|[fFdDbSsLl]?)") && tokens.get(tokens.size() - 1).getRawContent().equals("-")) {
-			tokens.remove(tokens.size() - 1);
-			accumulated = "-" + accumulated;
-		}
 		tokens.add(getTokenForstring(accumulated, line, colomn - accumulated.length()));
 		accumulated = "";
 	}
@@ -469,8 +411,8 @@ public class TokenBuilder {
 			}
 		}
 		if (decimalChars.indexOf(in.charAt(0)) != -1 || in.charAt(0) == '-') { //decimal literals
-			String decimal = in.substring(0, in.length() - 1);
-			if (decimal.matches("-?[0-9]+(\\.[0-9]+[fFdD]?)|[fFdD]")) {
+			String decimal = in;
+			if (decimal.matches("-?[0-9]+((\\.[0-9]+[fFdD]?)|[fFdD])")) {
 				LiteralType type = LiteralType.DOUBLE;
 				if (decimal.toLowerCase().endsWith("f")) {
 					type = LiteralType.FLOAT;

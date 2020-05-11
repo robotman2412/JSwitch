@@ -2,39 +2,54 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc098afc-ed7c-4316-9f95-21212c1d0973" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionOut.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionPart.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionPartType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionStructure.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/Operator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/Operators.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/simple/AddOperator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/simple/NumericOperator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILInstruction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILInstructionFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/WordSize.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/WordSizeType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/LiteralToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/LiteralType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/typedef/SimpleNumberType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/typedef/SimpleNumberTypeEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/typedef/SimpleStringTypeDef.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/typedef/TypeDef.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jswitch/util/ListFeeder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/CompilerContext.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/JSWitchClassCompiler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/operator/InfixOperator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/operator/PrefixOperator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/scope/Scope.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/scope/ScopeImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/scope/ScopeStack.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/Operator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/OperatorType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ReferenceType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/CanonicalSeperationToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jswitch/compiler_old.7z" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/CompilerWarning.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/CompilerWarning.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JSwitch.iml" beforeDir="false" afterPath="$PROJECT_DIR$/JSwitch.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/JSWitchCompiler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/JSwitchPreProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/JSwitchPreProcessor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/SyntaxError.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/SyntaxError.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/ExpressionStructure.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/declarators/DeclaratorStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/declarators/DeclaratorStructure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/AccessLevel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/Structure.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/declarators/DeclaratorOut.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/declarators/DeclaratorStructure.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/declarators/DeclaratorType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionOut.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionPart.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionPartType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionPartType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/ExpressionStructure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/Operator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/Operators.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/simple/AddOperator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/structure/expression/operators/simple/NumericOperator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILInstruction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILInstructionFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/swil/SWILUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/swil/WordSize.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/swil/WordSizeType.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/Keyword.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/Keyword.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/KeywordToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/KeywordToken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/SeperationToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/SeperationToken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/SeperationType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/StructureType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/StructureToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/StructureToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/LiteralToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/LiteralToken.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/Token.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/TokenBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/TokenBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/compiler/tokenising/TokenType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/typedef/SimpleNumberType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/typedef/SimpleNumberTypeEnum.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/typedef/SimpleStringTypeDef.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jswitch/compiler/typedef/TypeDef.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jswitch/util/Feeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jswitch/util/Feeder.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -66,16 +81,27 @@
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1UKt8eWjZkMnzINGjMGD69Sxuvq" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/eclipse-workspace/JUtils.jar!/" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="jswitch.compiler.tokenising" />
+      <recent name="jswitch.compiler" />
       <recent name="jswitch.util" />
       <recent name="jswitch.compiler.jswil" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Julian\Documents\JSwitch\src\jswitch" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -90,26 +116,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.TokenBuilder">
-    <configuration name="DeclaratorStructure" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="jswitch.compiler.structure.declarators.DeclaratorStructure" />
+  <component name="RunManager">
+    <configuration name="JSWitchClassCompiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="jswitch.compiler.JSWitchClassCompiler" />
       <module name="JSwitch" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="jswitch.compiler.structure.declarators.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TokenBuilder" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="jswitch.compiler.tokenising.TokenBuilder" />
-      <module name="JSwitch" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="jswitch.compiler.tokenising.*" />
+          <option name="PATTERN" value="jswitch.compiler.structure.expression.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -119,8 +132,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TokenBuilder" />
-        <item itemvalue="Application.DeclaratorStructure" />
+        <item itemvalue="Application.JSWitchClassCompiler" />
       </list>
     </recent_temporary>
   </component>
@@ -142,7 +154,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584123983996</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Type definitions and expression parsing started.">
+      <created>1584528714989</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1584528714989</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -160,6 +179,28 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add to git." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add to git." />
+    <MESSAGE value="Type definitions and expression parsing started." />
+    <option name="LAST_COMMIT_MESSAGE" value="Type definitions and expression parsing started." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/jswitch/compiler/JSWitchClassCompiler.java</url>
+          <line>71</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/jswitch/compiler/JSWitchClassCompiler.java</url>
+          <line>229</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/jswitch/compiler/JSWitchClassCompiler.java</url>
+          <line>249</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

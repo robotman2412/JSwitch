@@ -1,5 +1,6 @@
 package jswitch.compiler;
 
+import jswitch.compiler.tokenising.SimpleToken;
 import jswitch.compiler.tokenising.Token;
 
 public class SyntaxError extends RuntimeException {
@@ -14,6 +15,9 @@ public class SyntaxError extends RuntimeException {
 	protected String message;
 
 	public SyntaxError(String mMessage, Token offending) {
+		if (offending == null) {
+			offending = new SimpleToken("", 0, 0, 0);
+		}
 		offendingTokens = new Token[] {offending};
 		lineStart = lineEnd = offending.getLine();
 		colomnStart = offending.getColumnStart();
@@ -23,6 +27,9 @@ public class SyntaxError extends RuntimeException {
 	}
 
 	public SyntaxError(String mMessage, Token[] offending) {
+		if (offending == null) {
+			offending = new Token[] {new SimpleToken("", 0, 0, 0)};
+		}
 		offendingTokens = offending;
 		lineStart = offending[0].getLine();
 		colomnStart = offending[0].getColumnStart();
